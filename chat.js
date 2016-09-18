@@ -2,19 +2,24 @@
 
 var socket = io.connect();
 
+var userName;
+
+var target = 0;
+
 socket.on('connect', function() {
     console.log("Connected");
     userName = prompt("Please enter a username");
+    num = socket.id;
+    socket.emit('idUser', userName, num);
 });
 
-var userName;
 
 //var userID = function(user){
 //    userName = user;
 //};
 
 // Receive from any event
-socket.on('chatmessage', function (data, idNumber) {
+socket.on('chatmessage', function (data, idNumber, target) {
     if (idNumber == socket.id){
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
@@ -36,6 +41,10 @@ socket.on('chatmessage', function (data, idNumber) {
         var chatArea = document.getElementById('messages');
         chatArea.appendChild(newLine);
     }
+    
+    if (target == userName){
+        socket.emit('close');
+    }
     console.log("Sender ID: " + idNumber);
 });
 
@@ -48,6 +57,10 @@ socket.on('closeWindow', function(){
 
 var sendmessage = function(message) {
     console.log("chatmessage: " + userName + " " + message);
-    socket.emit('chatmessage',  userName + ": " + message, message, userName, socket.id);
+    socket.emit('chatmessage',  userName + ": " + message, message, userName, socket.id, target);
     
+};
+
+var setTarget = function(bullseye){
+  target = bullseye;  
 };
