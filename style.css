@@ -2,6 +2,16 @@
     color: red;
 }
 
+.userblue{
+	color: blue;
+}
+
+.userjoke{
+	color: orange;
+	font-size: 40pt;
+	font-family:"Comic Sans MS", cursive, sans-serif;
+}
+
 .chatPartner{
     color: green;
     text-align: right;

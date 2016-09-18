@@ -8,6 +8,7 @@ socket.on('connect', function() {
 });
 
 var userName;
+var userText
 
 //var userID = function(user){
 //    userName = user;
@@ -17,10 +18,20 @@ var userName;
 socket.on('chatmessage', function (data, idNumber) {
     if (idNumber == socket.id){
         var newLine = document.createElement('p');
-        var userText = document.createAttribute('class');
+        userText = document.createAttribute('class');
         userText.value= "user";
         var newMessage = document.createTextNode(data);
         newLine.appendChild(newMessage); 
+        console.log("this is newMessage : " + newMessage)
+
+        var userInput =(document.getElementById('message').value)
+        if (userInput== 'hello'){
+            userText.value= "userblue";
+        }
+        if (userInput== 'funny'){
+            userText.value= "userjoke";
+        }
+
         newLine.setAttributeNode(userText);
         var chatArea = document.getElementById('messages');
         chatArea.appendChild(newLine);
@@ -32,6 +43,16 @@ socket.on('chatmessage', function (data, idNumber) {
         userText.value= "chatPartner";
         var newMessage = document.createTextNode(data);
         newLine.appendChild(newMessage); 
+
+
+        var userInput =(document.getElementById('message').value)
+        if (userInput== 'hello'){
+            userText.value= "userblue";
+        }
+
+        if (userInput== 'funny'){
+            userText.value= "userjoke";
+        }
         newLine.setAttributeNode(userText);
         var chatArea = document.getElementById('messages');
         chatArea.appendChild(newLine);
@@ -45,6 +66,7 @@ socket.on('closeWindow', function(){
 });
 
 var sendmessage = function(message) {
+
     console.log("chatmessage: " + userName + " " + message);
     socket.emit('chatmessage',  userName + ": " + message, socket.id);
 };
