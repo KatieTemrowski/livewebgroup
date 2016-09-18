@@ -7,11 +7,11 @@
 	</head>
  <body>
  <div id="messages">
-     <p>No Messages Yet</p>
+     <h1 id="timer">Welcome to Mafia Chat</h1>
  </div>
- <input type="text" id="message" name="message">
+ <input type="text" id="message" name="message" onkeydown="if(event.keyCode == 13){sendmessage(document.getElementById('message').value);}">
  <input type="submit" value="message" onclick="sendmessage(document.getElementById('message').value);">
-<input type="text" id="target" name="target">
-<input type ="submit" value="target" onclick="setTarget(document.getElementById('target').value);"
+<input type="text" id="target" name="target" onkeydown="if(event.keyCode == 13){setTarget(document.getElementById('target').value);}">
+<input type ="submit" value="target" onclick="setTarget(document.getElementById('target').value);">
  </body>
 </html>

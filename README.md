@@ -16,3 +16,5 @@ chatter = new Chatters(socket.id);
 - identify the chats coming from different people
 - play with the room feature, to make chats available only to certain folks
 - improve the way the chats display
+
+Question: how do you analyze a string of text coming from the chat partner?  How do you convert that into string to be evaluated by the if statement?”

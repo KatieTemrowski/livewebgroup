@@ -59,24 +59,25 @@ io.sockets.on('connection',
             console.log(chatter.name);
         });
         
-		socket.on('chatmessage', function(data, command, username, id, target) {
-			if (command == "close"){
+		socket.on('chatmessage', function(data, message, userName, id, target) {
+			if (message == "close"){
                 socket.emit('closeWindow')
                 //socket.disconnect();
                 //io.sockets.emit('closeWindow');
             }
             else{
             // Data comes in as whatever was sent, including objects
-			console.log("Received: 'chatmessage' " + data + " from " + id + " using username: " + username);
+			console.log("Received: 'chatmessage' " + data + " from " + id + " using username: " + userName);
 			
 			// Send it to all of the clients
             //socket.broadcast.emit('chatmessage', data);
-			io.sockets.emit('chatmessage', data, id, target);
+            var senderName = userName;
+			io.sockets.emit('chatmessage', data, message, senderName, id, target);
             }
 		});    
     
         socket.on('boot', function(){
-           socket.disconnect(ids[1]); 
+           socket.disconnect(); 
         });
     
         socket.on('close', function(){

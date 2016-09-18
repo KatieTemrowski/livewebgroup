@@ -4,23 +4,20 @@ var socket = io.connect();
 
 var userName;
 
-var target = 0;
+var target = "all";
 
 socket.on('connect', function() {
     console.log("Connected");
     userName = prompt("Please enter a username");
     num = socket.id;
     socket.emit('idUser', userName, num);
+    socket.emit('timer');
 });
 
-
-//var userID = function(user){
-//    userName = user;
-//};
-
 // Receive from any event
-socket.on('chatmessage', function (data, idNumber, target) {
-    if (idNumber == socket.id){
+socket.on('chatmessage', function (data, message, senderName, id, target) {
+    
+    if (id == socket.id){
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
         userText.value= "user";
@@ -31,7 +28,18 @@ socket.on('chatmessage', function (data, idNumber, target) {
         chatArea.appendChild(newLine);
     }
     
-    else{
+    else if (target == userName) {
+        var newLine = document.createElement('p');
+        var userText = document.createAttribute('class');
+        userText.value= "private";
+        var newMessage = document.createTextNode(data);
+        newLine.appendChild(newMessage); 
+        newLine.setAttributeNode(userText);
+        var chatArea = document.getElementById('messages');
+        chatArea.appendChild(newLine);
+    }
+    
+    else if (target == "all") {
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
         userText.value= "chatPartner";
@@ -42,25 +50,29 @@ socket.on('chatmessage', function (data, idNumber, target) {
         chatArea.appendChild(newLine);
     }
     
-    if (target == userName){
+    else{
+        console.log("nothing");
+    }
+    
+    if (target == userName && message == "end"){
         socket.emit('close');
     }
-    console.log("Sender ID: " + idNumber);
+    console.log("Sender ID: " + id);
 });
 
 socket.on('closeWindow', function(){
-    var doc = document.getElementsByTagName("BODY")[0].innerHTML="LOSER";
+    var doc = document.getElementsByTagName("BODY")[0].innerHTML="Your time in the game has ended";
     socket.emit('boot');
-//    window.open();
-//    window.close(); 
 });
 
 var sendmessage = function(message) {
     console.log("chatmessage: " + userName + " " + message);
-    socket.emit('chatmessage',  userName + ": " + message, message, userName, socket.id, target);
-    
+    var data = userName + ": " + message
+    socket.emit('chatmessage',  data, message, userName, socket.id, target);
+    var formField = document.getElementById('message');
+    formField.value = ' ';
 };
 
 var setTarget = function(bullseye){
-  target = bullseye;  
+  target = bullseye;
 };
