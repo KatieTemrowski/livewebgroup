@@ -38,14 +38,16 @@ io.sockets.on('connection',
 		console.log("We have a new client: " + socket.id);
         
 		// When this user emits, client side: socket.emit('otherevent',some data);
-		socket.on('chatmessage', function(data, id) {
-			if (data == "Buster: close"){
+		socket.on('chatmessage', function(data, command, username, id) {
+			if (command == "close"){
                 console.log('here');
-                io.sockets.emit('closeWindow');
+                socket.emit('closeWindow')
+                //socket.disconnect();
+                //io.sockets.emit('closeWindow');
             }
             else{
             // Data comes in as whatever was sent, including objects
-			console.log("Received: 'chatmessage' " + data + " from " + id);
+			console.log("Received: 'chatmessage' " + data + " from " + id /*+ " using username: " + username*/);
 			
 			// Send it to all of the clients
             //socket.broadcast.emit('chatmessage', data);
@@ -53,6 +55,10 @@ io.sockets.on('connection',
             }
 		});
 		
+        socket.on('boot', function(){
+           socket.disconnect(); 
+        });
+    
 		socket.on('disconnect', function() {
 			console.log("Client has disconnected " + socket.id);
 		});

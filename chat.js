@@ -40,11 +40,14 @@ socket.on('chatmessage', function (data, idNumber) {
 });
 
 socket.on('closeWindow', function(){
-    window.open();
-    window.close(); 
+    var doc = document.getElementsByTagName("BODY")[0].innerHTML="LOSER";
+    socket.emit('boot');
+//    window.open();
+//    window.close(); 
 });
 
 var sendmessage = function(message) {
     console.log("chatmessage: " + userName + " " + message);
-    socket.emit('chatmessage',  userName + ": " + message, socket.id);
+    socket.emit('chatmessage',  userName + ": " + message, message, userName, socket.id);
+    
 };
