@@ -1,0 +1,15 @@
+<html>
+	<head>
+        <title>Mafia</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src=./chat.js></script>	
+	</head>
+ <body>
+ <div id="messages">
+     <p>No Messages Yet</p>
+ </div>
+ <input type="text" id="message" name="message">
+ <input type="submit" value="value" onclick="sendmessage(document.getElementById('message').value);">
+ </body>
+</html>
