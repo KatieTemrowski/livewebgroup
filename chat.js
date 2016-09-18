@@ -15,7 +15,7 @@ var userText
 //};
 
 // Receive from any event
-socket.on('chatmessage', function (data, idNumber) {
+socket.on('chatmessage', function (data, command, idNumber) {
     if (idNumber == socket.id){
         var newLine = document.createElement('p');
         userText = document.createAttribute('class');
@@ -28,7 +28,7 @@ socket.on('chatmessage', function (data, idNumber) {
         if (userInput== 'hello'){
             userText.value= "userblue";
         }
-        if (userInput== 'funny'){
+        if (userInput== 'funny' || userInput=='HAHA'|| userInput=='haha'|| userInput=='lol'){
             userText.value= "userjoke";
         }
 
@@ -44,13 +44,12 @@ socket.on('chatmessage', function (data, idNumber) {
         var newMessage = document.createTextNode(data);
         newLine.appendChild(newMessage); 
 
-
-        var userInput =(document.getElementById('message').value)
-        if (userInput== 'hello'){
+        var partnerInput = command
+        if (partnerInput== 'hello'){
             userText.value= "userblue";
         }
 
-        if (userInput== 'funny'){
+        if (partnerInput== 'funny'){
             userText.value= "userjoke";
         }
         newLine.setAttributeNode(userText);
