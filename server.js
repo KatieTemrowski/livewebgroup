@@ -38,8 +38,8 @@ io.sockets.on('connection',
 		console.log("We have a new client: " + socket.id);
         
 		// When this user emits, client side: socket.emit('otherevent',some data);
-		socket.on('chatmessage', function(data, command, username, id) {
-			if (command == "close"){
+		socket.on('chatmessage', function(data, id) {
+			if (data == "Buster: close"){
                 console.log('here');
                 io.sockets.emit('closeWindow');
             }
@@ -49,7 +49,7 @@ io.sockets.on('connection',
 			
 			// Send it to all of the clients
             //socket.broadcast.emit('chatmessage', data);
-			io.sockets.emit('chatmessage', data, command, id);
+			io.sockets.emit('chatmessage', data, id);
             }
 		});
 		

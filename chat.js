@@ -15,7 +15,7 @@ var userText
 //};
 
 // Receive from any event
-socket.on('chatmessage', function (data, command, idNumber) {
+socket.on('chatmessage', function (data, idNumber) {
     if (idNumber == socket.id){
         var newLine = document.createElement('p');
         userText = document.createAttribute('class');
@@ -28,8 +28,18 @@ socket.on('chatmessage', function (data, command, idNumber) {
         if (userInput== 'hello'){
             userText.value= "userblue";
         }
-        if (userInput== 'funny' || userInput=='HAHA'|| userInput=='haha'|| userInput=='lol'){
+        if (userInput== 'funny' || userInput=='HAHA'|| userInput=='haha'|| userInput=='LOL'){
             userText.value= "userjoke";
+        }
+        if (userInput== 'big'){
+            userText.value= "userlarge";
+        }
+        if (userInput== 'invisible' || userInput=='bye'|| userInput=='white'|| userInput=='Hi'){
+            userText.value= "userwhite";
+        
+        }
+        if (userInput== 'hillary' || userInput=='clinton'|| userInput=='Hillary Clinton'|| userInput=='Democrat'){
+            userText.value= "hill";
         }
 
         newLine.setAttributeNode(userText);
@@ -44,12 +54,13 @@ socket.on('chatmessage', function (data, command, idNumber) {
         var newMessage = document.createTextNode(data);
         newLine.appendChild(newMessage); 
 
-        var partnerInput = command
-        if (partnerInput== 'hello'){
+
+        var userInput =(document.getElementById('message').value)
+        if (userInput== 'hello'){
             userText.value= "userblue";
         }
 
-        if (partnerInput== 'funny'){
+        if (userInput== 'funny'){
             userText.value= "userjoke";
         }
         newLine.setAttributeNode(userText);
