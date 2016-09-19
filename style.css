@@ -1,14 +1,18 @@
 .user{
-    text-align: right;
     color: red;
 }
 
 .chatPartner{
     color: green;
-    text-align: left;
+    text-align: right;
 }
 
-.private{
-    color: black;
-    text-align: center;
+.hide{
+	visibility: hidden;
+	opacity: 0.0;
+}
+
+.show{
+	visibility: visible;
+	opacity: 1.0;
 }
