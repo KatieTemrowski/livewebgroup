@@ -2,22 +2,40 @@
 
 var socket = io.connect();
 
-var userName;
+//var ChatName = {};
+//
+//function User(userPrompt){
+//    this.userName = userPrompt;
+//}
 
+var userName;
 var target = "all";
 
 socket.on('connect', function() {
     console.log("Connected");
     userName = prompt("Please enter a username");
-    num = socket.id;
-    socket.emit('idUser', userName, num);
-    socket.emit('timer');
 });
 
 // Receive from any event
-socket.on('chatmessage', function (data, message, senderName, id, target) {
+socket.on('chatmessage', function (data, message, senderName, id, target1) {
     
-    if (id == socket.id){
+    if (userName == target1){
+        if(message.indexOf("end") >= 0){
+            socket.emit('close');
+        }
+        else{
+            var newLine = document.createElement('p');
+            var userText = document.createAttribute('class');
+            userText.value= "private";
+            var newMessage = document.createTextNode(data);
+            newLine.appendChild(newMessage); 
+            newLine.setAttributeNode(userText);
+            var chatArea = document.getElementById('messages');
+            chatArea.appendChild(newLine);
+        }
+    }
+     
+    else if (id == socket.id){
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
         userText.value= "user";
@@ -27,11 +45,11 @@ socket.on('chatmessage', function (data, message, senderName, id, target) {
         var chatArea = document.getElementById('messages');
         chatArea.appendChild(newLine);
     }
-    
-    else if (target == userName) {
+
+    else if (message.indexOf("funny") >= 0) {
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
-        userText.value= "private";
+        userText.value= "userjoke";
         var newMessage = document.createTextNode(data);
         newLine.appendChild(newMessage); 
         newLine.setAttributeNode(userText);
@@ -39,7 +57,7 @@ socket.on('chatmessage', function (data, message, senderName, id, target) {
         chatArea.appendChild(newLine);
     }
     
-    else if (target == "all") {
+    else{
         var newLine = document.createElement('p');
         var userText = document.createAttribute('class');
         userText.value= "chatPartner";
@@ -50,13 +68,6 @@ socket.on('chatmessage', function (data, message, senderName, id, target) {
         chatArea.appendChild(newLine);
     }
     
-    else{
-        console.log("nothing");
-    }
-    
-    if (target == userName && message == "end"){
-        socket.emit('close');
-    }
     console.log("Sender ID: " + id);
 });
 
@@ -66,7 +77,6 @@ socket.on('closeWindow', function(){
 });
 
 var sendmessage = function(message) {
-    console.log("chatmessage: " + userName + " " + message);
     var data = userName + ": " + message
     socket.emit('chatmessage',  data, message, userName, socket.id, target);
     var formField = document.getElementById('message');
