@@ -1,74 +1,17 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="style.css">
+        <title>Chat Room</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript">
-		
-			var socket = io.connect();
-			var userName;
-			var count = 0;
-
-			socket.on('connect', function() {
-				console.log("Connected");
-				 userName = prompt("Please enter a username");
-				 count++;
-				 console.log("No: " + count);
-			});
-
-			// Receive from any event
-			socket.on('chatmessage', function (data, message, name, id, userNum) {
-				var link = "http://www.indianfunpic.com/wp-content/uploads/2016/06/Funny-Kids-14.jpg";
-				var funnypic1 = "<img src=" + link + ">";
-				console.log("again: " + userNum);
-				// if(data=="yuli: hi"){
-				if(userNum ==1){
-				document.getElementById('messages').innerHTML = "" + funnypic1 + "" + document.getElementById('messages').innerHTML;
-				}
-				else{
-				// document.getElementById('messages').innerHTML = "" + data + "" + document.getElementById('messages').innerHTML;
-				 if (id == socket.id){
-        			var newLine = document.createElement('p');
-        			var userText = document.createAttribute('class');
-        			userText.value= "user";
-        			var newMessage = document.createTextNode(data);
-        			newLine.appendChild(newMessage); 
-        			newLine.setAttributeNode(userText);
-        			var chatArea = document.getElementById('messages');
-
-        			chatArea.appendChild(newLine);
-   			 		}
-    
-    				else{
-        			var newLine = document.createElement('p');
-        			var userText = document.createAttribute('class');
-        			userText.value= "chatPartner";
-        			var newMessage = document.createTextNode(data);
-        			newLine.appendChild(newMessage); 
-        			newLine.setAttributeNode(userText);
-        			var chatArea = document.getElementById('messages');
-        			chatArea.appendChild(newLine);
-    				} 
-				}
-				console.log(data);
-				
-			});
-			
-
-
-			var sendmessage = function(message) {
-    		console.log("chatmessage: " + userName + " " + message);
-    		socket.emit('chatmessage',  userName + ": " + message, message, userName, socket.id, count);
-    
-			};
-
-	
-		</script>	
+		<script type="text/javascript" src=./chat.js></script>	
 	</head>
  <body>
  <div id="messages">
- No Messages Yet
+     <h1 id="timer">Welcome to Chat</h1>
  </div>
- <input type="text" id="message" name="message">
- <input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+ <input type="text" id="message" name="message" onkeydown="if(event.keyCode == 13){sendmessage(document.getElementById('message').value);}">
+ <input type="submit" value="message" onclick="sendmessage(document.getElementById('message').value);">
+<input type="text" id="target" name="target" onkeydown="if(event.keyCode == 13){setTarget(document.getElementById('target').value);}">
+<input type ="submit" value="target" onclick="setTarget(document.getElementById('target').value);">
  </body>
 </html>
